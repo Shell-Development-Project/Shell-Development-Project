@@ -1,30 +1,31 @@
+/*input
+ 
+*/
+///-------------------------------------------------------------------------------------
+/*
+	AUTHOR:		Akash Agarwal
+				1405231007-Computer Science Department
+				IET LUCKNOW
+	LIFE MOTTO:	while(!(suceed=try()))
+*/
+///--------------------------------------------------------------------------------------
+
+//Predefined #INCLUDES 
+
 #include <iostream>
-#include <algorithm>
+#include <vector>
 #include <string>
+#include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
+
+//User Defined #INCLUDES
+#include "lexical.h"
 
 using namespace std;
-
-int cmdLexicalAnalysis(string cmd)
-{
-	size_t pos;
-	string testCmd, tokenStream;
-	testCmd = cmd;
-	pos = testCmd.find(' ');
-	// cout << "pos=" << pos << endl;
-	testCmd = testCmd.erase(0,pos + 1);
-	// cout << "testcmd=" << testCmd << endl;
-	tokenStream.append("<unix_command>");
-	// cout << "tokenstream=" << tokenStream << endl;
-}
-
-int cmdSyntaxAnalysis(string cmd)
-{	
-	string tokenStream;
-	tokenStream = cmdLexicalAnalysis(cmd);
-}
 
 int main()
 {	
