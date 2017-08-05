@@ -36,54 +36,47 @@ string lexems(string testCmd)
 	}
 }
 
-void substrPos(string cmd, size_t &strStartPos, size_t &strEndPos)
+int substrPos(string cmd, int it, int &strStartPos, int &strEndPos) 
 {
-	strStartPos = cmd.find(' ');
+	strStartPos = cmd.find(' ',it + 1);
 	strEndPos = cmd.find(' ', strStartPos + 1);
-	string::iterator it = distance(cmd.begin(), cmd.find(' '));
-	cout << "Distance= " << it;
-
-	// if (strEndpos == -1)
-	// {
-	// 	strEndpos = cmd.end();
-	// }
-	// if (strStartpos == -1)
-	// {
-	// 	strStartpos = cmd.end();
-	// }
+	cout << "strStartPos:" << strStartPos << endl;
+	cout << "strEndPos:" << strEndPos << endl;
+	if (strStartPos == -1)								// If no further space is found, means that we have found all 
+	{													// the tokens
+		return -1;
+	}
+	if (strEndPos == -1 && strStartPos != -1)			// If space before the token is found, but not the space after
+	{													// the token, this means that we are on the last token.
+		strEndPos = cmd.length();						// In that case, make the variable- that takes the index value 
+		return 0;										// space after a token- take the value of length of the string
+	}													// i.e. 1 more than the index position of last character.
+	return 0;
 }
-
 int cmdLexicalAnalysis(string cmd)
 {
-	size_t strStartPos, strEndPos;
-	string  tokenStream, nextToken;
+	int strStartPos, strEndPos, strLength, mark;		//strStartPos: Stores the index value of space before a token.
+														// srtEndPos: Stores the index value of space after a token.
+	string nextToken, tokenStream;						
+	strLength = cmd.length();
+	// cout << "Length:" << strLength << endl;
 	tokenStream.append("<command_name>");
-	for (string::iterator it = cmd.begin(); it != cmd.end(); it++)
-	{
-		substrPos(cmd, strStartPos, strEndPos);
-		cout << "strStartpos=" << strStartPos<< endl;
-		cout << "strEndpos=" << strEndPos<< endl;
-		// it = distance(cmd.begin(), strStartPos + 1);
-		nextToken = lexems(cmd.substr(strStartPos + 1, strEndPos - strStartPos));
-		cout << "Subtring: "<< cmd.substr(strStartPos + 1, strEndPos - strStartPos) << endl;
+	for (int it = 0; it < strLength - 1; it++)
+	{	
+		// cout << "Iter:" << it << endl;
+		mark = substrPos(cmd, it, strStartPos, strEndPos);	// Find the position of space characters 
+															// before and after a token in the command
+		// cout << "Mark:" << mark << endl;
+		if (mark == -1)
+			break;
+		it = strStartPos;									// Move the iterator to the space preceding the next token 
+		// cout << "Updated Iter:" << it << endl;
+		nextToken = lexems(cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1));	// Stores the string value of token type
+		// cout << "nextToken:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
 		tokenStream.append(nextToken);
-		cout << "tokenStream=" << tokenStream << endl;
+		// cout << "tokenStream" << tokenStream << endl;
 	}
-	// for (int it = testCmd.begin(); it != testCmd.end(); it++)
-	// {	
-	// 	if(it == -1)
-	// 		break;
-	// 	pos = testCmd.find(' ');
-	// 	it = pos + 1;
-	// 	testCmd = testCmd.erase(0,pos + 1);
-	// 	cout << "testCmd=" << testCmd << endl;
-	// 	nextToken = lexems(testCmd);
-	// 	tokenStream.append(nextToken);
-	// }
-	// cout << "tokenstream=" << tokenStream << endl;
-	// cout << "testCmd=" << testCmd << endl;
-
-
+	return 0;
 }
 
 int cmdSyntaxAnalysis(string cmd)

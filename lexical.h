@@ -7,6 +7,6 @@ using namespace std;
 string lexems(string testCmd);
 int cmdLexicalAnalysis(string cmd);
 int cmdSyntaxAnalysis(string cmd);
-void substrPos(string cmd,size_t &strStartPos, size_t &strEndpos);
+int substrPos(string cmd, int it, int &strStartPos, int &strEndpos);
 
 #endif // LEXICAL_H_INCLUDED
