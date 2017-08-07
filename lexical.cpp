@@ -31,6 +31,9 @@ string lexems(string testCmd)
 		case '/':	return "<DIRECTORY>";
 					break;
 
+		case '"':	return "<usr_entered_string>";
+					break;
+
 		default:	return "<string>";
 					break;
 	}
@@ -40,8 +43,8 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 {
 	strStartPos = cmd.find(' ',it + 1);
 	strEndPos = cmd.find(' ', strStartPos + 1);
-	cout << "strStartPos:" << strStartPos << endl;
-	cout << "strEndPos:" << strEndPos << endl;
+	// cout << "strStartPos:" << strStartPos << endl;
+	// cout << "strEndPos:" << strEndPos << endl;
 	if (strStartPos == -1)								// If no further space is found, means that we have found all 
 	{													// the tokens
 		return -1;
@@ -73,8 +76,14 @@ int cmdLexicalAnalysis(string cmd)
 		// cout << "Updated Iter:" << it << endl;
 		nextToken = lexems(cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1));	// Stores the string value of token type
 		// cout << "nextToken:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
+		if (nextToken == "<usr_entered_string>")
+		{	
+			it = cmd.find('"', it + 2);
+			// cout << it;
+			nextToken = "<string>";
+		}
 		tokenStream.append(nextToken);
-		// cout << "tokenStream" << tokenStream << endl;
+		cout << "tokenStream" << tokenStream << endl;
 	}
 	return 0;
 }
