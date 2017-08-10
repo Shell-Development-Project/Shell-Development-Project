@@ -58,7 +58,7 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 }
 int cmdLexicalAnalysis(string cmd)
 {
-	int strStartPos, strEndPos, strLength, mark;		//strStartPos: Stores the index value of space before a token.
+	int strStartPos, strEndPos, strLength, mark, commandTurn = 0;		//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
 	string nextToken, tokenStream;						
 	strLength = cmd.length();
@@ -78,10 +78,17 @@ int cmdLexicalAnalysis(string cmd)
 		// cout << "nextToken:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
 		if (nextToken == "<usr_entered_string>")
 		{	
-			it = cmd.find('"', it + 2);
+			it = cmd.find('"', it + 2) - 1;
 			// cout << it;
 			nextToken = "<string>";
 		}
+		if (commandTurn == 1)
+		{
+			nextToken = "<command_name>";
+			commandTurn = 0;
+		}
+		if (nextToken == "<PIPE>")
+			commandTurn++;
 		tokenStream.append(nextToken);
 		cout << "tokenStream" << tokenStream << endl;
 	}
