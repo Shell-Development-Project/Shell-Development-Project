@@ -8,5 +8,7 @@ string lexems(string testCmd);
 int cmdLexicalAnalysis(string cmd);
 int cmdSyntaxAnalysis(string cmd);
 int substrPos(string cmd, int it, int &strStartPos, int &strEndpos);
+int validateDir(string dir);
+int validateCmd(string cmd);
 
 #endif // LEXICAL_H_INCLUDED

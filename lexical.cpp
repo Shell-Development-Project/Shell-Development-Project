@@ -7,8 +7,57 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <boost/filesystem.hpp>			// -lboost_system: Write this while compiling, this prevents
+										// the linker error.
+#include <boost/algorithm/string/replace.hpp>
 
 #include "lexical.h"
+
+int validateCmd(string cmd)
+{	
+	if (cmd == "cd")
+	{
+		return 1;
+	}
+	boost::filesystem::path pathToBin("/bin/" + cmd);
+	cout << "path=" << pathToBin << "\n";
+	if (boost::filesystem::exists(pathToBin))
+	{
+		cout << "valid command";
+	}
+	else
+		cout << "invalid command";
+	return 0;
+}
+
+int validateDir(string dir)
+{	
+	// replace(dir.begin(), dir.end(), '~', "/home/akash");	//Cannot use std::replace() because, it replaces char with nother char
+															//here we have to replace character with string
+	boost::filesystem::path path(dir);
+	// cout << "boost path" << path;
+		// try
+		{
+			// cout << "current path:" << boost::filesystem::current_path() <<endl; // Shows the current working directory
+
+			string path2 = boost::algorithm::replace_all_copy(path.string(),"~","/home/akash"); // Since ~(home directory) is 
+								// not a valid arguument fot chdir()
+
+			cout << "changed path=" << path2 << "\n";
+			if (boost::filesystem::exists(path2))
+			{
+				cout << "exists";
+				chdir (path2.c_str());		//chdir() is defined in <unistd.h>
+				cout << "changed current path:" << boost::filesystem::current_path() <<endl;
+			}
+			else
+				cout << "cd: "<< dir << ": No such file or directory";
+		}
+		// catch (boost::filesystem::filesystem_error &e)
+		// {
+		// 	cerr << e.what() << "\n";
+		// }
+}
 
 string lexems(string testCmd)
 {
@@ -41,30 +90,42 @@ string lexems(string testCmd)
 
 int substrPos(string cmd, int it, int &strStartPos, int &strEndPos) 
 {
-	strStartPos = cmd.find(' ',it + 1);
-	strEndPos = cmd.find(' ', strStartPos + 1);
-	// cout << "strStartPos:" << strStartPos << endl;
-	// cout << "strEndPos:" << strEndPos << endl;
-	if (strStartPos == -1)								// If no further space is found, means that we have found all 
-	{													// the tokens
-		return -1;
+	if (it == -1)											// if iterator is at the beginning of the command string
+	{														
+		strStartPos = -1;									
+		strEndPos = cmd.find(' ', it + 1);
 	}
-	if (strEndPos == -1 && strStartPos != -1)			// If space before the token is found, but not the space after
-	{													// the token, this means that we are on the last token.
-		strEndPos = cmd.length();						// In that case, make the variable- that takes the index value 
-		return 0;										// space after a token- take the value of length of the string
+	else													
+	{
+		strStartPos = cmd.find(' ', it);
+		strEndPos = cmd.find(' ', strStartPos + 1);
+		// cout << "strStartPos:" << strStartPos << endl;
+		// cout << "strEndPos:" << strEndPos << endl;
+		if (strStartPos == -1)								// If no further space is found, means that we have found all 
+		{													// the tokens
+			return -1;
+		}
+		if (strEndPos == -1 && strStartPos != -1)			// If space before the token is found, but not the space after
+		{													// the token, this means that we are on the last token.
+			strEndPos = cmd.length();						// In that case, make the variable- that takes the index value 
+															// space after a token- take the value of length of the string
+			if (strEndPos - strStartPos == 1)				// if we've reached the end of the string and the last character 
+				return -1;									// entered by the user is blank: ' '.
+			
+			return 0;										
+		}
 	}													// i.e. 1 more than the index position of last character.
 	return 0;
 }
 int cmdLexicalAnalysis(string cmd)
 {
-	int strStartPos, strEndPos, strLength, mark, commandTurn = 0;		//strStartPos: Stores the index value of space before a token.
+	int strStartPos, strEndPos, strLength, mark, commandTurn = 1, dirArg = 0;//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
-	string nextToken, tokenStream;						
+	string token, tokenStream, subString;						
 	strLength = cmd.length();
 	// cout << "Length:" << strLength << endl;
-	tokenStream.append("<command_name>");
-	for (int it = 0; it < strLength - 1; it++)
+	// tokenStream.append("<command_name>");
+	for (int it = -1; it < strLength - 1; it++)
 	{	
 		// cout << "Iter:" << it << endl;
 		mark = substrPos(cmd, it, strStartPos, strEndPos);	// Find the position of space characters 
@@ -74,22 +135,55 @@ int cmdLexicalAnalysis(string cmd)
 			break;
 		it = strStartPos;									// Move the iterator to the space preceding the next token 
 		// cout << "Updated Iter:" << it << endl;
-		nextToken = lexems(cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1));	// Stores the string value of token type
-		// cout << "nextToken:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
-		if (nextToken == "<usr_entered_string>")
+		subString = cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1);
+		token = lexems(subString);	// Stores the string value of token type
+		// cout << "token:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
+
+		if (token == "<usr_entered_string>")
 		{	
 			it = cmd.find('"', it + 2) - 1;
 			// cout << it;
-			nextToken = "<string>";
+			token = "<string>";
 		}
-		if (commandTurn == 1)
+		if (dirArg == 1)
 		{
-			nextToken = "<command_name>";
-			commandTurn = 0;
+			token = "<DIRECTORY>";
+			while (cmd[strEndPos - 1] == '\\')		// when the file or directory name consists of spaces.
+			{	
+				subString.erase(strEndPos - strStartPos - 2);	// erase backslash(\) character from path string.
+															// bool::filesystem::exists() does not require the use of 
+															// backslash(\) to check the existence of file or directory
+															// it is the feature of the shell.
+				it ++;				// move the iterator by one space to help finding the next two spaces in the string using substrPos()
+				substrPos(cmd, it, strStartPos, strEndPos);
+				subString = subString + " " + cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1);
+																	// Take the next substring and add it to the 
+																	// previous substring to treat them as 
+																	// one space separated directory path. 
+				it = strStartPos;		// reset the position of the iterator, so that at the very end when, blackslash(\)
+										// is not found, we DO NOT repeat the substring already taken in consideration
+										// and unwillingly add it to the tokenstream as a <string>
+			}
+			validateDir(subString);
+			dirArg = 0;
 		}
-		if (nextToken == "<PIPE>")
+		if (commandTurn == 1) 
+		{
+			token = "<command_name>";					// This converts the token type of string at the beginning of the
+														// command or just after the PIPE operator to <command_name>
+			commandTurn = 0;							// commandTurn helps to ensure whether or not, the next token 
+														// needs to be of type <command_name> or not.
+			/* Now, since we know that the token has to be a unix command, we need to validate it.
+			The subString variable already contains the token value, just send it to validateCmd() to check the 
+			validity of the <command_name>*/
+			dirArg = validateCmd(subString);
+			if (dirArg == 1)
+				token = "<cd>";
+		}
+		if (token == "<PIPE>")
 			commandTurn++;
-		tokenStream.append(nextToken);
+	
+		tokenStream.append(token);
 		cout << "tokenStream" << tokenStream << endl;
 	}
 	return 0;
