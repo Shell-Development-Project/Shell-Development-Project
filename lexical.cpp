@@ -32,31 +32,30 @@ int validateCmd(string cmd)
 
 int validateDir(string dir)
 {	
-	// replace(dir.begin(), dir.end(), '~', "/home/akash");	//Cannot use std::replace() because, it replaces char with nother char
+	// replace(dir.begin(), dir.end(), '~', "/home/akash");	//Cannot use std::replace() because, it replaces char with another char
 															//here we have to replace character with string
 	boost::filesystem::path path(dir);
-	// cout << "boost path" << path;
-		// try
-		{
-			// cout << "current path:" << boost::filesystem::current_path() <<endl; // Shows the current working directory
+	// cout << "current path:" << boost::filesystem::current_path() <<endl; // Shows the current working directory
+	string username, pathToHome;
+	// getlogin_r (username, LOGIN_NAME_MAX);	// we did not use getlogin_r because it is a C function
+												// and requires username to be of type: (char*)
+	username = string(getenv("USER"));	// getenv() is a C++ func. and gets the value of environment variable mentioned in 
+										// the argument. Since the return type is char*, we convert it to type string
+	pathToHome = "/home/" + username;	// make a path to home directory so as to replace it with ~ sign.
+	// cout << pathToHome;
 
-			string path2 = boost::algorithm::replace_all_copy(path.string(),"~","/home/akash"); // Since ~(home directory) is 
-								// not a valid arguument fot chdir()
+	string path2 = boost::algorithm::replace_all_copy(path.string(),"~",pathToHome); 	// Since ~(home directory) is 
+																						// not a valid argument for chdir()
 
-			cout << "changed path=" << path2 << "\n";
-			if (boost::filesystem::exists(path2))
-			{
-				cout << "exists";
-				chdir (path2.c_str());		//chdir() is defined in <unistd.h>
-				cout << "changed current path:" << boost::filesystem::current_path() <<endl;
-			}
-			else
-				cout << "cd: "<< dir << ": No such file or directory";
-		}
-		// catch (boost::filesystem::filesystem_error &e)
-		// {
-		// 	cerr << e.what() << "\n";
-		// }
+	// cout << "changed path=" << path2 << "\n";
+	if (boost::filesystem::exists(path2))
+	{
+		// cout << "exists";
+		chdir (path2.c_str());		//chdir() is defined in <unistd.h>
+		// cout << "changed current path:" << boost::filesystem::current_path() <<endl;
+	}
+	else
+		cout << "cd: "<< dir << ": No such file or directory";
 }
 
 string lexems(string testCmd)
