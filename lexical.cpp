@@ -116,11 +116,11 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 	}													// i.e. 1 more than the index position of last character.
 	return 0;
 }
-int cmdLexicalAnalysis(string cmd)
+int cmdLexicalAnalysis(string cmd, string &tokenStream)
 {
 	int strStartPos, strEndPos, strLength, mark, commandTurn = 1, dirArg = 0;//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
-	string token, tokenStream, subString;						
+	string token, subString;						
 	strLength = cmd.length();
 	// cout << "Length:" << strLength << endl;
 	// tokenStream.append("<command_name>");
@@ -188,8 +188,3 @@ int cmdLexicalAnalysis(string cmd)
 	return 0;
 }
 
-int cmdSyntaxAnalysis(string cmd)
-{	
-	string tokenStream;
-	tokenStream = cmdLexicalAnalysis(cmd);
-}

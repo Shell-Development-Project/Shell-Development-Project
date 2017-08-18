@@ -5,7 +5,7 @@
 using namespace std;
 
 string lexems(string testCmd);
-int cmdLexicalAnalysis(string cmd);
+int cmdLexicalAnalysis(string cmd, string &tokenStream);
 int cmdSyntaxAnalysis(string cmd);
 int substrPos(string cmd, int it, int &strStartPos, int &strEndpos);
 int validateDir(string dir);
