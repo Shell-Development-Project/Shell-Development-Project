@@ -108,12 +108,14 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 		{													// the token, this means that we are on the last token.
 			strEndPos = cmd.length();						// In that case, make the variable- that takes the index value 
 															// space after a token- take the value of length of the string
+															// i.e. 1 more than the index position of last character.
+			
 			if (strEndPos - strStartPos == 1)				// if we've reached the end of the string and the last character 
 				return -1;									// entered by the user is blank: ' '.
 			
 			return 0;										
 		}
-	}													// i.e. 1 more than the index position of last character.
+	}													
 	return 0;
 }
 int cmdLexicalAnalysis(string cmd, string &tokenStream)
