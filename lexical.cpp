@@ -131,12 +131,14 @@ int cmdLexicalAnalysis(string cmd, string &tokenStream)
 		// cout << "Iter:" << it << endl;
 		mark = substrPos(cmd, it, strStartPos, strEndPos);	// Find the position of space characters 
 															// before and after a token in the command
+		// cout << "strStartPos" << strStartPos << "\t" << "strEndPos" << strEndPos;
 		// cout << "Mark:" << mark << endl;
 		if (mark == -1)
 			break;
 		it = strStartPos;									// Move the iterator to the space preceding the next token 
 		// cout << "Updated Iter:" << it << endl;
 		subString = cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1);
+		// cout << subString;
 		token = lexems(subString);	// Stores the string value of token type
 		// cout << "token:" << cmd.substr(strStartPos + 1, strEndPos - strStartPos - 1) << endl;
 
