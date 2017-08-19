@@ -43,7 +43,7 @@ int main()
 			 << hostname 
 			 << ":"
 			 << boost::algorithm::replace_all_copy(boost::filesystem::current_path().string(), pathtoHome, "~") 
-			 << "<!!> " 
+			 << "!>> " 
 			 << flush;
 		getline(cin,cmd);
 		cmdSyntaxAnalysis(cmd);
