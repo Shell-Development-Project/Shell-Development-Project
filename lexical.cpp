@@ -118,7 +118,7 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 	}
 	return 0;
 }
-int cmdLexicalAnalysis(string cmd, string &tokenStream)
+int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream)
 {
 	int strStartPos, strEndPos, strLength, mark, commandTurn = 1, dirArg = 0;//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
@@ -184,8 +184,7 @@ int cmdLexicalAnalysis(string cmd, string &tokenStream)
 		if (token == "<PIPE>")
 			commandTurn++;
 
-		tokenStream.append(token);
-		cout << "tokenStream" << tokenStream << endl;
+		tokenStream.push_back(token);
 	}
 	return 0;
 }
