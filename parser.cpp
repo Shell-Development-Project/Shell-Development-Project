@@ -21,7 +21,8 @@ int cmdSyntaxAnalysis(string cmd)
 	
 	cmdLexicalAnalysis(cmd, tokenStream);
 	constructTable(table);
-	tokenStream.push_back("<$>");
+	if(! tokenStream.empty())
+		tokenStream.push_back("<$>");
 	// tokenStream.push_back("<string>");
 	// tokenStream.push_back("<string>");
 	// tokenStream.push_back("<string>");

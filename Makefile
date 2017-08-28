@@ -17,7 +17,7 @@ a: all
 run: all
 	./all
 all: main.o parser.o lexical.o syntax_analyser.o
-	$(CC) main.o parser.o lexical.o syntax_analyser.o -o all -lboost_system -lboost_filesystem
+	$(CC) main.o parser.o lexical.o syntax_analyser.o -o all -lboost_system -lboost_filesystem -lreadline
 main.o: main.cpp
 		$(CC) $(CFLAGS) main.cpp
 parser.o: parser.cpp

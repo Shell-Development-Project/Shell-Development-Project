@@ -184,7 +184,7 @@ void parser(std::unordered_map <key, value>& table, std::vector <std::string>& t
 {	
 	
 	std::string nextSym;
-	stack.push(stackElement(0,"stackEnd"));
+	stack.push(stackElement(0,"<$>"));
 	// std::cout << stack.top().first
 	// 		  << stack.top().second;
 	int tokenStreamLength = tokenStream.size();
