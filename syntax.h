@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <utility>
+#include <exception>
 #include <unordered_map>
 // #include <functional>
 
@@ -75,7 +76,18 @@ namespace std
 		}
 	};
 };
-
+// class MyException:public exception
+// {
+// public:
+// 	MyException(const std::string m = "Syntax Error"):msg(m){}
+// 	~MyException(void);
+// 	const char* what()
+// 	{
+// 		return msg.c_str();
+// 	}
+// private:
+// 	std::string msg;
+// };
 void constructTable(std::unordered_map <key,value>& table);
 void parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream);
 int reduceMove(int productionNo, std::unordered_map <key, value>& table);

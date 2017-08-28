@@ -102,6 +102,11 @@ ________________________________________________________________________________
 	table[key(12,"<AMP>")] = value(6,'R');
 	table[key(12,"<$>")] = value(6,'R');
 
+	table[key(0,"<special_command>")] = value(13,'G');
+	table[key(0,"<cd>")] = value(14,'S');
+	table[key(13,"<$>")] = value(9,'R');
+	table[key(14,"<DIRECTORY>")] = value(15,'S');
+	table[key(15,"<$>")] = value(10,'R');
 	// auto ii = table.find(key(12,"<PIPE>"));
 	// std::cout << ii->first.first
 	// 		  << std::endl
@@ -155,7 +160,16 @@ int reduceMove(int productionNo, std::unordered_map <key, value>& table)
 				gotoState = stack.top().first;
 				stack.push(stackElement(-1,"<ARG>"));
 				break;
-		default: std::cout << "SYNTAX ERROR!!!";
+		case 9: stack.pop();
+				gotoState = stack.top().first;
+				stack.push(stackElement(-1,"<valid_string>"));
+				break;
+		case 10: for (int i = 0; i < 2; i++)
+					stack.pop();
+				gotoState = stack.top().first;
+				stack.push(stackElement(-1,"<special_command>"));
+				break;
+		default: throw productionNo;
 	}
 	auto ii = table.find(key(gotoState, stack.top().second));
 	if (ii != table.end())
@@ -163,6 +177,7 @@ int reduceMove(int productionNo, std::unordered_map <key, value>& table)
 		if (ii->second.second == 'G')
 			stack.top().first = ii->second.first;
 	}
+return 0;
 }
 
 void parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream)
@@ -174,31 +189,41 @@ void parser(std::unordered_map <key, value>& table, std::vector <std::string>& t
 	// 		  << stack.top().second;
 	int tokenStreamLength = tokenStream.size();
 	// std::cout << tokenStreamLength;
-	for (int i = 0; i < tokenStreamLength; i++)
+	try
 	{
-		nextSym = tokenStream[i];
-		std::cout << nextSym<<std::endl;
-		// nextSym = "<$>";
-		auto ii = table.find(key(stack.top().first, nextSym));
-		if (ii != table.end())
-		{	
-			std::cout << "hello"<<std::endl;
-			if (ii->second.second == 'S')
-				stack.push(stackElement(ii->second.first, nextSym));;
-			if (ii->second.second == 'A')
-				std::cout << "ACCEPTED!!";
-			if (ii->second.second == 'R')
-			{
-				reduceMove(ii->second.first, table);
-				i--;	
-			}
-			std::cout << stack.top().first<< std::endl;
-			std::cout << stack.top().second<< std::endl;
-
-		}
-		else
+		for (int i = 0; i < tokenStreamLength; i++)
 		{
-			std::cout << "error";
+			nextSym = tokenStream[i];
+			// std::cout << "nextSym=" << nextSym <<std::endl;
+			// nextSym = "<$>";
+			auto ii = table.find(key(stack.top().first, nextSym));
+			if (ii != table.end())
+			{	
+				// std::cout << "hello"<<std::endl;
+				if (ii->second.second == 'S')
+					stack.push(stackElement(ii->second.first, nextSym));;
+				if (ii->second.second == 'A')
+					std::cout << "ACCEPTED!!\n";
+				if (ii->second.second == 'R')
+				{
+					reduceMove(ii->second.first, table);
+					i--;	
+				}
+				// std::cout << "stack.top().first" << stack.top().first << std::endl;
+				// std::cout << "stack.top().second"<< stack.top().second << std::endl;
+			}
+			else
+			{
+				throw nextSym;
+			}
 		}
+	}
+	catch (std::string e)
+	{
+		std::cout << "Syntax error: " << e << " unexpected" << std::endl;
+	}
+	catch (int e)
+	{
+		std::cout << "Syntax error: " << e << " the syntax used is not in accordance with the shell grammar." << std::endl;
 	}
 }

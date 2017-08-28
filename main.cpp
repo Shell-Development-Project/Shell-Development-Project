@@ -46,7 +46,14 @@ int main()
 			 << "!>> " 
 			 << flush;
 		getline(cin,cmd);
-		cmdSyntaxAnalysis(cmd);
+		try
+		{
+			cmdSyntaxAnalysis(cmd);
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << "\n";
+		}
 	}
 	return 0;
 }

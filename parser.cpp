@@ -18,6 +18,7 @@ int cmdSyntaxAnalysis(string cmd)
 {	
 	std::vector <std::string> tokenStream;
 	std::unordered_map <key, value> table;
+	
 	cmdLexicalAnalysis(cmd, tokenStream);
 	constructTable(table);
 	tokenStream.push_back("<$>");

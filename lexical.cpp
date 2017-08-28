@@ -20,13 +20,9 @@ int validateCmd(string cmd)
 		return 1;
 	}
 	boost::filesystem::path pathToBin("/bin/" + cmd);
-	cout << "path=" << pathToBin << "\n";
-	if (boost::filesystem::exists(pathToBin))
-	{
-		cout << "valid command";
-	}
-	else
-		cout << "invalid command";
+	// cout << "path=" << pathToBin << "\n";
+	if (! boost::filesystem::exists(pathToBin))
+		throw std::runtime_error(cmd + ": command not found");
 	return 0;
 }
 
@@ -55,7 +51,8 @@ int validateDir(string dir)
 		// cout << "changed current path:" << boost::filesystem::current_path() <<endl;
 	}
 	else
-		cout << "cd: "<< dir << ": No such file or directory";
+		throw std::runtime_error("cd: " + dir + ": No such file or directory");
+return 0;
 }
 
 string lexems(string testCmd)
