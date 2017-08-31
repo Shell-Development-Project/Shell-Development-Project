@@ -7,7 +7,8 @@
 # make clean: TO delete all the built binary files.
 
 #~~~~~~~~~~~~~~~~~~VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~#
-CC = g++
+CC = g++ -std=c++11	
+# -std=c++11 This flag provides C++11 support in the g++ compiler
 CFLAGS = -c -Wall	
 # argument Wall is used for giving warnings
 
@@ -15,10 +16,12 @@ CFLAGS = -c -Wall
 a: all
 run: all
 	./all
-all: main.o lexical.o syntax_analyser.o
-	$(CC) main.o lexical.o syntax_analyser.o -o all -lboost_system -lboost_filesystem
+all: main.o parser.o lexical.o syntax_analyser.o
+	$(CC) main.o parser.o lexical.o syntax_analyser.o -o all -lboost_system -lboost_filesystem -lreadline
 main.o: main.cpp
 		$(CC) $(CFLAGS) main.cpp
+parser.o: parser.cpp
+			$(CC) $(CFLAGS) parser.cpp
 lexical.o: lexical.cpp
 			$(CC) $(CFLAGS) lexical.cpp
 syntax_analyser.o: syntax_analyser.cpp
