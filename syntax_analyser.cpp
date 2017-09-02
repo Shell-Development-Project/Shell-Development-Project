@@ -107,6 +107,7 @@ ________________________________________________________________________________
 	table[key(13,"<$>")] = value(9,'R');
 	table[key(14,"<DIRECTORY>")] = value(15,'S');
 	table[key(15,"<$>")] = value(10,'R');
+	table[key(8,"<$>")] = value(11,'R');
 	// auto ii = table.find(key(12,"<PIPE>"));
 	// std::cout << ii->first.first
 	// 		  << std::endl
@@ -169,6 +170,10 @@ int reduceMove(int productionNo, std::unordered_map <key, value>& table)
 				gotoState = stack.top().first;
 				stack.push(stackElement(-1,"<special_command>"));
 				break;
+		case 11: stack.pop();
+				 gotoState = stack.top().first;
+				 stack.push(stackElement(-1,"<unix_command>"));
+				 break;
 		default: throw productionNo;
 	}
 	auto ii = table.find(key(gotoState, stack.top().second));
@@ -180,7 +185,7 @@ int reduceMove(int productionNo, std::unordered_map <key, value>& table)
 return 0;
 }
 
-void parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream)
+int parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream)
 {	
 	
 	std::string nextSym;
@@ -203,7 +208,7 @@ void parser(std::unordered_map <key, value>& table, std::vector <std::string>& t
 				if (ii->second.second == 'S')
 					stack.push(stackElement(ii->second.first, nextSym));;
 				if (ii->second.second == 'A')
-					std::cout << "ACCEPTED!!\n";
+					return 1;
 				if (ii->second.second == 'R')
 				{
 					reduceMove(ii->second.first, table);
@@ -226,4 +231,5 @@ void parser(std::unordered_map <key, value>& table, std::vector <std::string>& t
 	{
 		std::cout << "Syntax error: " << e << " the syntax used is not in accordance with the shell grammar." << std::endl;
 	}
+	return 0;
 }

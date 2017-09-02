@@ -20,8 +20,11 @@ int validateCmd(string cmd)
 		return 1;
 	}
 	boost::filesystem::path pathToBin("/bin/" + cmd);
+	boost::filesystem::path pathToBin2("/usr/bin/" + cmd);
+	boost::filesystem::path pathToBin3("/usr/share/applications" + cmd);
+
 	// cout << "path=" << pathToBin << "\n";
-	if (! boost::filesystem::exists(pathToBin))
+	if (! boost::filesystem::exists(pathToBin) && ! boost::filesystem::exists(pathToBin2) && ! boost::filesystem::exists(pathToBin3))
 		throw std::runtime_error(cmd + ": command not found");
 	return 0;
 }
@@ -115,7 +118,7 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 	}
 	return 0;
 }
-int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream)
+int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream, std::vector <char*>& tokens)
 {
 	int strStartPos, strEndPos, strLength, mark, commandTurn = 1, dirArg = 0;//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
@@ -182,6 +185,7 @@ int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream)
 			commandTurn++;
 
 		tokenStream.push_back(token);
+		tokens.push_back(strdup(subString.c_str()));
 	}
 	return 0;
 }
