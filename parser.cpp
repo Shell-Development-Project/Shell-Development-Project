@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 #include <algorithm>
 #include <stdio.h>
 #include <string.h>
@@ -13,13 +14,16 @@
 
 #include "lexical.h"
 #include "syntax.h"
+#include "processctrl.h"
 
 int cmdSyntaxAnalysis(string cmd)
 {	
 	std::vector <std::string> tokenStream;
+	std::vector <char*> tokens;
 	std::unordered_map <key, value> table;
+	int flag = 0;
 	
-	cmdLexicalAnalysis(cmd, tokenStream);
+	cmdLexicalAnalysis(cmd, tokenStream, tokens);
 	constructTable(table);
 	if(! tokenStream.empty())
 		tokenStream.push_back("<$>");
@@ -28,6 +32,17 @@ int cmdSyntaxAnalysis(string cmd)
 	// tokenStream.push_back("<string>");
 	// tokenStream.push_back("<string>");
 	// tokenStream.push_back("<unix_command>");
-	parser(table, tokenStream);
+	flag = parser(table, tokenStream);
+	if (flag == 1)
+	{	
+		try
+		{
+			processctrl(cmd, tokens);
+		}
+		catch(int x)
+		{
+			std::cout << "Fork Error" << std::endl;
+		}
+	}
 return 0;
 }

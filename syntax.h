@@ -89,6 +89,6 @@ namespace std
 // 	std::string msg;
 // };
 void constructTable(std::unordered_map <key,value>& table);
-void parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream);
+int parser(std::unordered_map <key, value>& table, std::vector <std::string>& tokenStream);
 int reduceMove(int productionNo, std::unordered_map <key, value>& table);
 #endif // SYNTAX_H_INCLUDED

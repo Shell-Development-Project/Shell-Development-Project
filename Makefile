@@ -16,8 +16,8 @@ CFLAGS = -c -Wall
 a: all
 run: all
 	./all
-all: main.o parser.o lexical.o syntax_analyser.o
-	$(CC) main.o parser.o lexical.o syntax_analyser.o -o all -lboost_system -lboost_filesystem -lreadline
+all: main.o parser.o lexical.o syntax_analyser.o processCtrl.o
+	$(CC) main.o parser.o lexical.o syntax_analyser.o processCtrl.o -o all -lboost_system -lboost_filesystem -lreadline
 main.o: main.cpp
 		$(CC) $(CFLAGS) main.cpp
 parser.o: parser.cpp
@@ -26,5 +26,7 @@ lexical.o: lexical.cpp
 			$(CC) $(CFLAGS) lexical.cpp
 syntax_analyser.o: syntax_analyser.cpp
 			$(CC) $(CFLAGS) syntax_analyser.cpp
+processCtrl.o: processCtrl.cpp
+				$(CC) $(CFLAGS) processCtrl.cpp
 clean:
 		rm -rf *o all

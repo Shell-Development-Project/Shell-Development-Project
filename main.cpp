@@ -52,7 +52,9 @@ int main()
 	  	/*Get a line from the user. */
 	  	// if (line_read == EOF)
 	  	// 	break;
-	  	string prompt = username
+	  	string prompt = "\n"
+						 +
+						 username
 	  					 +
 	  					 "@"
 	  					 + 
@@ -83,7 +85,7 @@ int main()
 		}
 		catch (const std::exception& e)
 		{
-			cout << e.what() << "\n";
+			cout <<e.what() << "\n";
 		}
 	}
 	return 0;
