@@ -21,9 +21,11 @@ int cmdSyntaxAnalysis(string cmd)
 	std::vector <std::string> tokenStream;
 	std::vector <char*> tokens;
 	std::unordered_map <key, value> table;
-	int flag = 0;
+	int flag;
+	int whichTypeofExecution = 0;
+	int pipeCount = 0;
 	
-	cmdLexicalAnalysis(cmd, tokenStream, tokens);
+	cmdLexicalAnalysis(cmd, tokenStream, tokens, pipeCount);
 	constructTable(table);
 	if(! tokenStream.empty())
 		tokenStream.push_back("<$>");
@@ -34,15 +36,16 @@ int cmdSyntaxAnalysis(string cmd)
 	// tokenStream.push_back("<unix_command>");
 	flag = parser(table, tokenStream);
 	if (flag == 1)
-	{	
-		try
-		{
-			processctrl(cmd, tokens);
+		{	
+			try
+			{
+				processctrl(cmd, tokens, pipeCount, whichTypeofExecution);
+				// processctrl(cmd, tokens);
+			}
+			catch(int x)
+			{
+				std::cout << "Maybe memory is not available for one more process...:-(" << std::endl;
+			}
 		}
-		catch(int x)
-		{
-			std::cout << "Fork Error" << std::endl;
-		}
-	}
 return 0;
 }
