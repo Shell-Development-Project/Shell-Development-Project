@@ -96,6 +96,7 @@ ________________________________________________________________________________
 	table[key(11,"<AMP>")] = value(8,'R');
 	table[key(11,"<string>")] = value(8,'R');
 	table[key(11,"<$>")] = value(8,'R');
+
 	
 	table[key(12,"<PIPE>")] = value(6,'R');
 	table[key(12,"<REDIRECTION>")] = value(6,'R');
@@ -108,6 +109,16 @@ ________________________________________________________________________________
 	table[key(14,"<DIRECTORY>")] = value(15,'S');
 	table[key(15,"<$>")] = value(10,'R');
 	table[key(8,"<$>")] = value(11,'R');
+	
+	table[key(2,"<&&>")] = value(16,'S');
+	table[key(16,"<command_name>")] = value(8,'S');
+	table[key(16,"<unix_command>")] = value(17,'G');
+	table[key(17,"<$>")] = value(1,'R');
+	table[key(11,"<&&>")] = value(8,'R');
+	table[key(10,"<&&>")] = value(7,'R');
+	table[key(9,"<&&>")] = value(5,'R');
+	table[key(12,"<&&>")] = value(6,'R');
+
 	// auto ii = table.find(key(12,"<PIPE>"));
 	// std::cout << ii->first.first
 	// 		  << std::endl

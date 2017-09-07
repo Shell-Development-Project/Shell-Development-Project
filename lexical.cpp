@@ -73,7 +73,12 @@ string lexems(string testCmd)
 		case '>':	return "<REDIRECTION>";
 					break;
 
-		case '&':	return "<AMP>";
+		case '&':	if (testCmd[1] == ' ')
+						return "<AMP>";
+					if (testCmd[1] == '&')
+						return "<&&>";
+					else
+						return "<string>";
 					break;
 
 		case '/':	return "<DIRECTORY>";
@@ -118,7 +123,7 @@ int substrPos(string cmd, int it, int &strStartPos, int &strEndPos)
 	}
 	return 0;
 }
-int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream, std::vector <char*>& tokens)
+int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream, std::vector <char*>& tokens, int& pipeCount)
 {
 	int strStartPos, strEndPos, strLength, mark, commandTurn = 1, dirArg = 0;//strStartPos: Stores the index value of space before a token.
 														// srtEndPos: Stores the index value of space after a token.
@@ -181,9 +186,12 @@ int cmdLexicalAnalysis(string cmd, std::vector <std::string>& tokenStream, std::
 			if (dirArg == 1)
 				token = "<cd>";
 		}
-		if (token == "<PIPE>")
+		if (token == "<PIPE>" || token == "<&&>")
+		{
 			commandTurn++;
-
+			if (token == "<PIPE>")
+				pipeCount++;
+		}
 		tokenStream.push_back(token);
 		tokens.push_back(strdup(subString.c_str()));
 	}
