@@ -15,7 +15,7 @@
     a new method of constructing SLR (1) parsing table has been improvised, this reduces the wastage of memory 
     caused using conventional Sparse Matrix Method.
     Hence, the newly developed shell has been named BISHOP (Boost Implemented OPerational SHell).
-    
+<h6> Implementation Details</h6>
 # Environment:
     The shell maintains many variables which allow the user to maintain settings and easily navigate the filesystem.
     Two of these that are particularly important are the current working directory and the PATH. As its name implies,
