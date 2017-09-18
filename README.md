@@ -43,7 +43,7 @@ The proposed parsing table structure has 4 attributes:
 -	Result - an integer whose meaning depends on the value of the attribute Action
 -	Action - if action is ‘S’, then Result contains the number of a LR(0)-Item; if action is ‘R’, then Result contains the number of a production; if action is ‘A’, then the input queue is recognized as true.
 
-# Pipelining
+# Pipelining:
     UNIX provides a variety of useful programs for use (grep, ls, echo, to name a few).
     Like instructions in C++, these programs tend to be quite effective at doing one specific thing 
     (Such as grep: searching text, ls: printing directories, and echo: printing text to the console).
@@ -55,7 +55,7 @@ The proposed parsing table structure has 4 attributes:
     input of another. An example of this is provided below, using the pipe operation to search for all 
     processes with the name under root user:
                                           ps auxx | grep “root” 
-# Process Control
+# Process Control:
     Bishop uses the conventional methods of process creation and execution in Unix/Linux (fork () and execvp ()
     system calls) aided by different implementation techniques like C++ STL (Standard Template Library) classes:
     std::string and std::vector.
@@ -71,7 +71,7 @@ The system call interface provides a total of six different variations of the ex
 
 Bishop uses execvp (const char *file, char *const argv[]) system call as it maintains a vector of command input strings.
 
-# References
+# References:
 -	Linux Lectures by Dr. B Frazer
 https://www.youtube.com/watch?v=9seb8hddeK4&index=2&t=7s&list=LLDUlQqsRbRzlDdJlyERjLBw
 -	Pipes Lectures
