@@ -16,7 +16,7 @@
     caused using conventional Sparse Matrix Method.
     Hence, the newly developed shell has been named BISHOP (Boost Implemented OPerational SHell).
 
-<h6> Implementation Details</h6>
+<h1> Implementation Details</h1>
 
 # Environment:
     The shell maintains many variables which allow the user to maintain settings and easily navigate the filesystem.
