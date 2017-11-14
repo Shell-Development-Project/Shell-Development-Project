@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/29279664/30529583-64c34574-9c5c-11e7-860b-59b5055aa3b7.png)
+![image](https://user-images.githubusercontent.com/29279664/32775331-1fe0b5e2-c955-11e7-8d1b-2c8ec03d724c.png)
 # Abstract
     Most useful interaction with a UNIX system occurs through the shell. Using a series of easy to remember and 
     simple commands, one can navigate the UNIX file system and issue commands to perform a wide variety of tasks. 
