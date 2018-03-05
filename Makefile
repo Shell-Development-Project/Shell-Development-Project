@@ -6,6 +6,10 @@
 # make run: TO run the compiled binary files
 # make clean: TO delete all the built binary files.
 
+#~~~~~~~~~~~~~~~~~~Libraries~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Install readline library: sudo apt-get install libreadline6 libreadline6-dev
+# Install boost library: sudo apt-get install libboost-all-dev
+
 #~~~~~~~~~~~~~~~~~~VARIABLES~~~~~~~~~~~~~~~~~~~~~~~~~#
 CC = g++ -std=c++11	
 # -std=c++11 This flag provides C++11 support in the g++ compiler
