@@ -28,7 +28,7 @@
 //User Defined #INCLUDES
 
 #include "lexical.h"
-#include "termcolor.hpp"
+// #include "termcolor.hpp"
 using namespace std;
 /*
 ANSI colour codes.
@@ -78,8 +78,10 @@ See the table on Wikipedia for other, less widely supported codes.
 int main()
 {	
 	string pathtoHome, username, hostname;
-	username = string(getenv("USER"));
-	hostname = string(getenv("HOSTNAME"));
+	username = string(getenv("USER"));		// If compiler is showing error: "basic_string::_M_construct null not valid"
+											// that means Ubuntu isn't exporting the variable like it should,
+										    // put "export HOSTNAME" in "/etc/bash.bashrc" and the code works.
+	hostname = string(getenv("HOSTNAME"));  // it will export both the username and the hostname.
 	pathtoHome = "/home/" + username;
 	chdir (pathtoHome.c_str());
 	static char* line_read = (char *) NULL;
